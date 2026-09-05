@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Matchbook Labs — earning infrastructure for AI agents</title>
-<meta name="description" content="Matchbook Labs: 19 paid products (catalog value $302 — $163 live, $139 in review), 3 MCP servers on pay-per-call rails, Solana and EVM open source. Solo operation, headless Linux box, everything listed runs.">
+<meta name="description" content="Matchbook Labs: 19 paid products live on Getly (catalog value $302), 3 MCP servers on pay-per-call rails, Solana and EVM open source. Solo operation, headless Linux box, everything listed runs.">
 <meta name="theme-color" content="#0a0a0b">
 <style>
   :root {
@@ -230,7 +230,7 @@
   .srow .go { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.08em; color: var(--muted-foreground); text-transform: uppercase; transition: color .15s; }
   .srow:hover .go { color: var(--acc); }
 
-  /* shadcn secondary badge for Live / In review */
+  /* shadcn secondary badges for Live / Fixing */
   .badge {
     display: inline-flex; align-items: center; white-space: nowrap;
     font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase;
@@ -238,6 +238,7 @@
   }
   .badge.live { background: rgba(74,222,128,0.12); color: var(--acc); border-color: rgba(74,222,128,0.25); }
   .badge.review { background: var(--secondary); color: var(--muted-foreground); }
+  .badge.fix { background: rgba(250,204,21,0.10); color: #facc15; border-color: rgba(250,204,21,0.25); }
 
   .catalog-cta { margin-top: 3rem; }
 
@@ -305,7 +306,7 @@
     <h1>Earning infrastructure for <em>AI agents</em>.</h1>
     <p class="lede">
       One person and a fleet of coding agents shipping from a headless box.
-      <b>19 paid products</b> (catalog value <b>$302</b> — $163 live, $139 in review), <b>3 MCP servers</b> on pay-per-call rails,
+      <b>19 paid products live</b> (catalog value <b>$302</b>), <b>3 MCP servers</b> on pay-per-call rails,
       open source on Solana and EVM. Everything on this page exists, runs, and takes payments.
     </p>
     <div class="hero-cta">
@@ -316,7 +317,7 @@
     <div class="stats">
       <div class="stat"><div class="n">19</div><div class="l">Paid products</div></div>
       <div class="stat"><div class="n">$302</div><div class="l">Catalog value</div></div>
-      <div class="stat"><div class="n">3</div><div class="l">MCP servers</div></div>
+      <div class="stat"><div class="n">0</div><div class="l">Sales</div></div>
       <div class="stat"><div class="n">25</div><div class="l">Rails probed</div></div>
       <div class="stat"><div class="n">$24k+</div><div class="l">Bounties mapped</div></div>
       <div class="stat"><div class="n">4</div><div class="l">Subs onchain</div></div>
@@ -403,88 +404,92 @@
   <section id="store">
     <svg class="divider" viewBox="0 0 1200 2" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="1" x2="1200" y2="1" pathLength="1" stroke="#4ade80" stroke-width="2" stroke-dasharray="1" stroke-dashoffset="1" vector-effect="non-scaling-stroke"/></svg>
     <div class="sec-head" data-reveal><span class="sec-index">02</span><h2>Store</h2></div>
-    <p class="sec-sub" data-reveal>19 instant-download products on Getly, $302 catalog value. $163 of that is live now; the other 13 listings ($139) sit in Getly review and go live at the same storefront. Every item came out of real mission work and ships with its source.</p>
+    <p class="sec-sub" data-reveal>20 instant-download products on Getly, $302 live catalog value. 19 listings are live now; Base &amp; L2 Directory is being fixed with Getly moderation and rejoins the same storefront. Every item came out of real mission work and ships with its source.</p>
 
     <div class="store-list" data-reveal-group>
       <a class="srow" href="https://www.getly.store/product/superteam-earn-28-live-listings-dataset-186-reverse-engineered-api-routes-mtmy11ny">
         <span class="nm">Superteam Earn Dataset — 28 Live Listings<span>186 reverse-engineered API routes included</span></span>
-        <span class="side"><span class="p">$49</span><span class="go badge live">Getly ↗</span></span>
+        <span class="side"><span class="p">$49</span><span class="go badge live">Live</span></span>
       </a>
       <a class="srow" href="https://www.getly.store/product/solana-agent-starter-token-2022-invoice-rails-starter-kit-mtn9o6ga">
         <span class="nm">Solana Agent Starter — Token-2022 Invoice Rails<span>2 Anchor programs + 3 TS snippets</span></span>
-        <span class="side"><span class="p">$39</span><span class="go badge live">Getly ↗</span></span>
+        <span class="side"><span class="p">$39</span><span class="go badge live">Live</span></span>
       </a>
       <a class="srow" href="https://www.getly.store/product/solana-pitch-deck-system-10-slide-html-deck-pdf-render-pipeline-mtmy42b8">
         <span class="nm">Solana Pitch Deck System<span>10-slide HTML deck + PDF render pipeline</span></span>
-        <span class="side"><span class="p">$29</span><span class="go badge live">Getly ↗</span></span>
+        <span class="side"><span class="p">$29</span><span class="go badge live">Live</span></span>
       </a>
       <a class="srow" href="https://www.getly.store/product/solana-social-banner-pack-40-web3-ready-header-images-mtn4vffw">
         <span class="nm">Solana Social Banner Pack<span>40 Web3-ready header images</span></span>
-        <span class="side"><span class="p">$19</span><span class="go badge live">Getly ↗</span></span>
+        <span class="side"><span class="p">$19</span><span class="go badge live">Live</span></span>
       </a>
       <a class="srow" href="https://www.getly.store/product/web-scraping-script-pack-10-production-ready-playwright-templates-mtn8em7k">
         <span class="nm">Web Scraping Script Pack<span>10 production-ready Playwright templates</span></span>
-        <span class="side"><span class="p">$15</span><span class="go badge live">Getly ↗</span></span>
+        <span class="side"><span class="p">$15</span><span class="go badge live">Live</span></span>
       </a>
       <a class="srow" href="https://www.getly.store/product/ai-terminal-wallpaper-pack-vol-1-20-4k-dark-wallpapers-mtn4vn69">
         <span class="nm">AI Terminal Wallpaper Pack Vol.1<span>20 4K dark wallpapers</span></span>
-        <span class="side"><span class="p">$12</span><span class="go badge live">Getly ↗</span></span>
+        <span class="side"><span class="p">$12</span><span class="go badge live">Live</span></span>
       </a>
-      <a class="srow" href="https://www.getly.store">
+      <a class="srow" href="https://www.getly.store/product/100-niche-saas-ideas-with-monetization-notes-difficulty-scores-mtnq4a9g">
         <span class="nm">100 Niche SaaS Ideas<span>monetization notes + difficulty scores</span></span>
-        <span class="side"><span class="p">$9</span><span class="go badge live">Getly ↗</span></span>
+        <span class="side"><span class="p">$9</span><span class="go badge live">Live</span></span>
       </a>
-      <a class="srow" href="https://www.getly.store">
+      <a class="srow" href="https://www.getly.store/product/web3-logo-mega-pack-40-crypto-defi-nft-logos-mtnq7gqg">
         <span class="nm">Web3 Logo Mega-Pack<span>40 crypto, DeFi and NFT logos</span></span>
-        <span class="side"><span class="p">$9</span><span class="go badge live">Getly ↗</span></span>
+        <span class="side"><span class="p">$9</span><span class="go badge live">Live</span></span>
       </a>
-      <a class="srow" href="https://www.getly.store">
+      <a class="srow" href="https://www.getly.store/product/web3-icon-mega-pack-50-crypto-defi-dev-tool-icons-mtntggfk">
         <span class="nm">Web3 Icon Mega-Pack<span>50 crypto, DeFi and dev-tool icons</span></span>
-        <span class="side"><span class="p">$9</span><span class="go badge review">In review</span></span>
+        <span class="side"><span class="p">$9</span><span class="go badge live">Live</span></span>
       </a>
-      <a class="srow" href="https://www.getly.store">
+      <a class="srow" href="https://www.getly.store/product/pitch-deck-slide-pack-20-editable-web3-startup-slide-templates-mtntwxtd">
         <span class="nm">Pitch Deck Slide Pack<span>20 editable web3/startup slide templates</span></span>
-        <span class="side"><span class="p">$12</span><span class="go badge review">In review</span></span>
+        <span class="side"><span class="p">$12</span><span class="go badge live">Live</span></span>
       </a>
-      <a class="srow" href="https://www.getly.store">
+      <a class="srow" href="https://www.getly.store/product/ai-terminal-wallpaper-pack-vol-2-20-new-4k-dark-wallpapers-mtnumvz2">
         <span class="nm">AI Terminal Wallpaper Pack Vol.2<span>20 new 4K dark wallpapers</span></span>
-        <span class="side"><span class="p">$12</span><span class="go badge review">In review</span></span>
+        <span class="side"><span class="p">$12</span><span class="go badge live">Live</span></span>
       </a>
-      <a class="srow" href="https://www.getly.store">
+      <a class="srow" href="https://www.getly.store/product/web3-kpi-spreadsheet-pack-5-google-sheets-excel-templates-multi-chain-mtnuvl2u">
         <span class="nm">Web3 KPI Spreadsheet Pack<span>5 Google Sheets / Excel templates</span></span>
-        <span class="side"><span class="p">$10</span><span class="go badge review">In review</span></span>
+        <span class="side"><span class="p">$10</span><span class="go badge live">Live</span></span>
       </a>
-      <a class="srow" href="https://www.getly.store">
+      <a class="srow" href="https://www.getly.store/product/web3-grants-ecosystem-funds-database-2026-38-verified-funding-sources-multi-chain-mtnvq5fv">
         <span class="nm">Web3 Grants Ecosystem Funds Database 2026<span>38 verified funding sources</span></span>
-        <span class="side"><span class="p">$15</span><span class="go badge review">In review</span></span>
+        <span class="side"><span class="p">$15</span><span class="go badge live">Live</span></span>
       </a>
-      <a class="srow" href="https://www.getly.store">
+      <a class="srow" href="https://www.getly.store/product/500-ai-prompts-for-etsy-e-commerce-sellers-listings-photos-seo-marketing-mtnvwdnd">
         <span class="nm">500 AI Prompts for Etsy &amp; E-commerce Sellers<span>listings, photos, SEO, marketing</span></span>
-        <span class="side"><span class="p">$12</span><span class="go badge review">In review</span></span>
+        <span class="side"><span class="p">$12</span><span class="go badge live">Live</span></span>
       </a>
-      <a class="srow" href="https://www.getly.store">
+      <a class="srow" href="https://www.getly.store/product/500-ai-prompts-pack-crypto-web3-trading-multi-chain-mtnv9kbw">
         <span class="nm">500 AI Prompts Pack<span>crypto, web3 and trading prompts</span></span>
-        <span class="side"><span class="p">$12</span><span class="go badge review">In review</span></span>
+        <span class="side"><span class="p">$12</span><span class="go badge live">Live</span></span>
       </a>
-      <a class="srow" href="https://www.getly.store">
+      <a class="srow" href="https://www.getly.store/product/web3-builder-os-multi-chain-notion-dashboard-projects-bounties-content-mtnxg0ri">
         <span class="nm">Web3 Builder OS<span>multi-chain Notion dashboard</span></span>
-        <span class="side"><span class="p">$15</span><span class="go badge review">In review</span></span>
+        <span class="side"><span class="p">$15</span><span class="go badge live">Live</span></span>
       </a>
-      <a class="srow" href="https://www.getly.store">
+      <a class="srow" href="https://www.getly.store/product/30-social-media-templates-for-web3-projects-x-instagram-linkedin-png-edit-guide-mtnxhmue">
         <span class="nm">30 Social Media Templates for web3<span>X, Instagram, LinkedIn — edit guide included</span></span>
-        <span class="side"><span class="p">$10</span><span class="go badge review">In review</span></span>
+        <span class="side"><span class="p">$10</span><span class="go badge live">Live</span></span>
       </a>
-      <a class="srow" href="https://www.getly.store">
+      <a class="srow" href="https://www.getly.store/product/crypto-trader-desk-kit-12-printable-cheat-sheets-pdf-a4-us-letter-mtnv4j3l">
         <span class="nm">Crypto Trader Desk Kit<span>12 printable cheat sheets, A4 / US Letter</span></span>
-        <span class="side"><span class="p">$8</span><span class="go badge review">In review</span></span>
+        <span class="side"><span class="p">$8</span><span class="go badge live">Live</span></span>
       </a>
-      <a class="srow" href="https://www.getly.store">
+      <a class="srow" href="https://www.getly.store/product/dark-tech-humor-sticker-pack-vol-1-12-print-ready-stickers-whatsapp-discord-laptop-mtnyc832">
         <span class="nm">Dark Tech-Humor Sticker Pack Vol.1<span>12 print-ready stickers</span></span>
-        <span class="side"><span class="p">$6</span><span class="go badge review">In review</span></span>
+        <span class="side"><span class="p">$6</span><span class="go badge live">Live</span></span>
       </a>
+      <div class="srow">
+        <span class="nm">Base &amp; L2 Directory — 136 Live Projects<span>funding sources, bridges &amp; tools — multi-chain</span></span>
+        <span class="side"><span class="p">$12</span><span class="go badge fix">Fixing</span></span>
+      </div>
     </div>
     <div class="catalog-cta"><a class="btn" href="https://jayjex.github.io/matchbook-labs/">Full catalog with covers ↗</a></div>
-    <p class="sec-sub" style="margin-top:1.3rem;font-size:0.82rem">13 of the 19 listings ($139) are in Getly review. Catalog value $302 counts them at list price once they clear; $163 of it is live now.</p>
+    <p class="sec-sub" style="margin-top:1.3rem;font-size:0.82rem">19 of 20 listings are live. Base &amp; L2 Directory is being fixed with Getly moderation (image rejection) and relists at the same storefront.</p>
   </section>
 
   <section id="infra">
@@ -526,7 +531,7 @@
         <ul class="ops">
           <li><span class="d">2026-09</span><span class="t"><b>canopy-ts PR #16</b> opened upstream: three runnable examples executed against mainnet. Bugs #550 and #431 reproduced and reported on canopy.</span></li>
           <li><span class="d">2026-09</span><span class="t"><b>4 TaskMarket submissions</b> landed onchain on Base, requester-funded escrows, zero gas spent.</span></li>
-          <li><span class="d">2026-09</span><span class="t"><b>3 MCP servers live on FiatDock</b> at $0.01–0.02/call; Getly catalog reaches 19 products, $302 catalog value ($163 live, $139 in review).</span></li>
+          <li><span class="d">2026-09</span><span class="t"><b>3 MCP servers live on FiatDock</b> at $0.01–0.02/call; Getly catalog reaches 19 live products, $302 catalog value (20th listing in fix-and-resubmit with moderation).</span></li>
           <li><span class="d">2026-09</span><span class="t"><b>ProofLens PoC verified</b> on Creditcoin CC3 testnet: precompile 0x0FD2 accepted real Sepolia proofs. BUIDL CTC entry.</span></li>
           <li><span class="d">2026-08</span><span class="t"><b>money-mission started</b>: agent fleet earns from a headless Linux box, every lane audited before use.</span></li>
         </ul>
