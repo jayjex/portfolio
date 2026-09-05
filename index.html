@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matchbook Labs — earning infrastructure for AI agents</title>
+<meta name="description" content="Matchbook Labs: 8 paid products, 3 MCP servers on pay-per-call rails, Solana and EVM open source. Solo operation, headless Linux box, everything listed runs.">
+<style>
+  :root {
+    --bg: #0a0a0b;
+    --bg2: #101013;
+    --card: #121216;
+    --line: #1e1e24;
+    --line2: #2a2a33;
+    --txt: #ececf1;
+    --dim: #8f8f9d;
+    --faint: #5c5c68;
+    --acc: #4ade80;
+    --acc-dim: #4ade8026;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Helvetica, Arial, sans-serif;
+    color-scheme: dark;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+  body {
+    background: var(--bg);
+    color: var(--txt);
+    font: 16px/1.6 var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--acc); color: #06130a; }
+  a { color: var(--txt); text-decoration: none; }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 1.5rem; }
+
+  /* ── nav ── */
+  nav {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(10,10,11,0.82);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-in { display: flex; align-items: center; justify-content: space-between; height: 58px; }
+  .brand { font-family: var(--mono); font-size: 0.82rem; letter-spacing: 0.06em; }
+  .brand b { color: var(--acc); font-weight: 600; }
+  .nav-links { display: flex; gap: 1.6rem; font-family: var(--mono); font-size: 0.76rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .nav-links a { color: var(--dim); transition: color .15s; }
+  .nav-links a:hover { color: var(--acc); }
+  @media (max-width: 640px) { .nav-links a.hide-s { display: none; } }
+
+  /* ── hero ── */
+  .hero { position: relative; padding: 7.5rem 0 5.5rem; border-bottom: 1px solid var(--line); overflow: hidden; }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(600px 340px at 18% 0%, rgba(74,222,128,0.07), transparent 70%),
+      repeating-linear-gradient(90deg, transparent 0 calc(100%/6 - 1px), var(--line) calc(100%/6 - 1px) calc(100%/6));
+    opacity: .55;
+  }
+  .hero-in { position: relative; }
+  .kicker {
+    font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--acc); margin-bottom: 1.4rem;
+  }
+  .kicker::before { content: "▸ "; color: var(--acc); }
+  h1 {
+    font-size: clamp(2.5rem, 6.4vw, 4.6rem);
+    line-height: 1.02; letter-spacing: -0.035em; font-weight: 700;
+    max-width: 15ch;
+  }
+  h1 em { font-style: normal; color: var(--acc); }
+  .lede { color: var(--dim); max-width: 52ch; margin-top: 1.5rem; font-size: 1.06rem; }
+  .lede b { color: var(--txt); font-weight: 600; }
+  .hero-cta { display: flex; gap: 0.9rem; margin-top: 2.2rem; flex-wrap: wrap; }
+  .btn {
+    font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.08em;
+    padding: 0.7rem 1.25rem; border: 1px solid var(--line2); border-radius: 6px;
+    transition: border-color .15s, background .15s, transform .15s;
+  }
+  .btn:hover { border-color: var(--acc); transform: translateY(-1px); }
+  .btn.solid { background: var(--acc); border-color: var(--acc); color: #06130a; font-weight: 600; }
+  .btn.solid:hover { background: #6cf09a; }
+
+  .stats {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: var(--line); border: 1px solid var(--line); margin-top: 4.2rem;
+  }
+  @media (min-width: 720px) { .stats { grid-template-columns: repeat(6, 1fr); } }
+  .stat { background: var(--bg); padding: 1.1rem 1.15rem 1rem; }
+  .stat .n { font-family: var(--mono); font-size: 1.55rem; font-weight: 600; color: var(--acc); letter-spacing: -0.02em; }
+  .stat .l { font-size: 0.72rem; color: var(--faint); text-transform: uppercase; letter-spacing: 0.12em; margin-top: 0.25rem; }
+
+  /* ── sections ── */
+  section { padding: 5rem 0 3.5rem; }
+  section + section { border-top: 1px solid var(--line); }
+  .sec-head { display: flex; align-items: baseline; gap: 1.2rem; margin-bottom: 0.7rem; }
+  .sec-index { font-family: var(--mono); font-size: 0.78rem; color: var(--acc); }
+  h2 { font-size: clamp(1.5rem, 3vw, 2.1rem); letter-spacing: -0.025em; font-weight: 650; }
+  .sec-sub { color: var(--dim); max-width: 58ch; margin-bottom: 2.4rem; }
+
+  /* ── work cards ── */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+    padding: 1.4rem 1.4rem 1.3rem; display: flex; flex-direction: column;
+    transition: border-color .18s, transform .18s, background .18s;
+    position: relative;
+  }
+  .card:hover { border-color: #4ade8059; transform: translateY(-3px); background: #15151a; }
+  .card .tags { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 0.9rem; }
+  .tag {
+    font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--faint); border: 1px solid var(--line2); border-radius: 99px; padding: 0.12rem 0.55rem;
+  }
+  .card h3 { font-size: 1.08rem; letter-spacing: -0.01em; font-weight: 650; }
+  .card p { color: var(--dim); font-size: 0.885rem; margin: 0.5rem 0 1.1rem; flex: 1; }
+  .card .meta { display: flex; justify-content: space-between; align-items: baseline; gap: 0.8rem; flex-wrap: wrap; }
+  .card .price { font-family: var(--mono); font-size: 0.78rem; color: var(--acc); white-space: nowrap; }
+  .card .links { display: flex; gap: 1rem; font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.05em; }
+  .card .links a { color: var(--dim); transition: color .15s; }
+  .card .links a:hover { color: var(--acc); }
+  .num {
+    position: absolute; top: 1.15rem; right: 1.3rem;
+    font-family: var(--mono); font-size: 0.72rem; color: var(--faint);
+  }
+
+  /* ── store ── */
+  .store-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 0.55rem; }
+  .srow {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 0.95rem 1.2rem; background: var(--card); border: 1px solid var(--line);
+    border-radius: 8px; transition: border-color .15s, transform .15s;
+  }
+  .srow:hover { border-color: #4ade8059; transform: translateX(3px); }
+  .srow .nm { font-size: 0.92rem; font-weight: 550; }
+  .srow .nm span { display: block; font-weight: 400; color: var(--faint); font-size: 0.78rem; margin-top: 0.1rem; }
+  .srow .side { display: flex; align-items: baseline; gap: 1rem; flex-shrink: 0; }
+  .srow .p { font-family: var(--mono); font-size: 0.85rem; color: var(--acc); }
+  .srow .go { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.08em; color: var(--faint); text-transform: uppercase; transition: color .15s; }
+  .srow:hover .go { color: var(--acc); }
+  .catalog-cta { margin-top: 1.6rem; }
+
+  /* ── infra ── */
+  .infra { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+  @media (min-width: 720px) { .infra { grid-template-columns: 1fr 1fr; } }
+  .icard { border: 1px solid var(--line); border-radius: 10px; padding: 1.5rem; background: var(--bg2); transition: border-color .18s; }
+  .icard:hover { border-color: #4ade8040; }
+  .icard .lbl { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--acc); margin-bottom: 0.7rem; }
+  .icard p { color: var(--dim); font-size: 0.9rem; }
+  .icard p b { color: var(--txt); font-weight: 600; }
+  .icard .src { font-family: var(--mono); font-size: 0.72rem; margin-top: 0.9rem; display: inline-block; color: var(--faint); }
+  .icard .src:hover { color: var(--acc); }
+
+  /* ── cv ── */
+  .cv { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+  @media (min-width: 720px) { .cv { grid-template-columns: 5fr 7fr; } }
+  .cv h4 { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint); margin-bottom: 1rem; }
+  .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .chip {
+    font-family: var(--mono); font-size: 0.74rem; color: var(--txt);
+    border: 1px solid var(--line2); border-radius: 6px; padding: 0.3rem 0.7rem;
+    transition: border-color .15s, color .15s;
+  }
+  .chip:hover { border-color: var(--acc); color: var(--acc); }
+  .cv .ops li {
+    list-style: none; display: grid; grid-template-columns: 5.4rem 1fr; gap: 1.1rem;
+    padding: 0.75rem 0; border-bottom: 1px solid var(--line); font-size: 0.9rem;
+  }
+  .cv .ops li:last-child { border-bottom: none; }
+  .cv .ops .d { font-family: var(--mono); font-size: 0.75rem; color: var(--acc); padding-top: 0.15rem; }
+  .cv .ops .t { color: var(--dim); }
+  .cv .ops .t b { color: var(--txt); font-weight: 600; }
+
+  /* ── footer ── */
+  footer { border-top: 1px solid var(--line); padding: 2.6rem 0 3.2rem; }
+  .foot { display: flex; justify-content: space-between; align-items: baseline; gap: 1.5rem; flex-wrap: wrap; font-family: var(--mono); font-size: 0.76rem; color: var(--faint); }
+  .foot .f-links { display: flex; gap: 1.4rem; }
+  .foot a { color: var(--dim); transition: color .15s; }
+  .foot a:hover { color: var(--acc); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-in">
+    <a class="brand" href="#top"><b>■</b> matchbook-labs</a>
+    <div class="nav-links">
+      <a href="#work">Work</a>
+      <a href="#store" class="hide-s">Store</a>
+      <a href="#infra" class="hide-s">Infra</a>
+      <a href="#cv">CV</a>
+      <a href="https://github.com/goblin-grub">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap hero-in">
+    <div class="kicker">Matchbook Labs · solo · headless Linux box</div>
+    <h1>Earning infrastructure for <em>AI agents</em>.</h1>
+    <p class="lede">
+      One person and a fleet of coding agents shipping from a headless box.
+      <b>8 paid products</b>, <b>3 MCP servers</b> on pay-per-call rails,
+      open source on Solana and EVM. Everything on this page exists, runs, and takes payments.
+    </p>
+    <div class="hero-cta">
+      <a class="btn solid" href="https://goblin-grub.github.io/matchbook-labs/">Browse the catalog</a>
+      <a class="btn" href="#work">See the work</a>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="n">8</div><div class="l">Paid products</div></div>
+      <div class="stat"><div class="n">$181</div><div class="l">Catalog value</div></div>
+      <div class="stat"><div class="n">3</div><div class="l">MCP servers</div></div>
+      <div class="stat"><div class="n">25</div><div class="l">Rails probed</div></div>
+      <div class="stat"><div class="n">$24k+</div><div class="l">Bounties mapped</div></div>
+      <div class="stat"><div class="n">4</div><div class="l">Subs onchain</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section id="work">
+    <div class="sec-head"><span class="sec-index">01</span><h2>Selected work</h2></div>
+    <p class="sec-sub">Repos with production deployments attached. Three earn per call on FiatDock; the rest are entries and upstream contributions.</p>
+
+    <div class="grid">
+      <div class="card">
+        <span class="num">01</span>
+        <div class="tags"><span class="tag">MCP</span><span class="tag">TypeScript</span><span class="tag">Reverse-engineering</span></div>
+        <h3>earn-bounty-scanner</h3>
+        <p>Live Superteam Earn bounties over MCP: search, full bounty text, open-bounty feeds. Full descriptions come from an undocumented superteam.fun search-index endpoint, no API key.</p>
+        <div class="meta">
+          <span class="price">$0.02/call</span>
+          <span class="links"><a href="https://github.com/goblin-grub/earn-bounty-scanner">repo</a><a href="https://fiatdock.com/s/svc_2099adfa-0ac5-4b90-b7e3-acba9d52b50e">fiatdock</a></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="num">02</span>
+        <div class="tags"><span class="tag">MCP</span><span class="tag">Dataset</span><span class="tag">Zero-runtime-network</span></div>
+        <h3>earn-dataset-mcp</h3>
+        <p>28 Superteam Earn listings with full text shipped inside the package. Zero network calls at runtime, $56,705 reward pool indexed, instant responses even when upstream is down.</p>
+        <div class="meta">
+          <span class="price">$0.01/call</span>
+          <span class="links"><a href="https://github.com/goblin-grub/earn-dataset-mcp">repo</a><a href="https://fiatdock.com/s/svc_7db4548f-dbf5-4f27-8e3c-31566b78ee01">fiatdock</a></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="num">03</span>
+        <div class="tags"><span class="tag">MCP</span><span class="tag">Research</span><span class="tag">Solana</span></div>
+        <h3>solana-research-library</h3>
+        <p>25 earning platforms field-probed: verdict, exact payout rail, KYC gate, evidence notes. 11 dead lanes kill-logged so no agent re-walks them.</p>
+        <div class="meta">
+          <span class="price">$0.02/call</span>
+          <span class="links"><a href="https://github.com/goblin-grub/solana-research-library">repo</a><a href="https://fiatdock.com/s/svc_47d8957d-9516-4575-aac0-b05b5eccec32">fiatdock</a></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="num">04</span>
+        <div class="tags"><span class="tag">Solidity</span><span class="tag">Precompiles</span><span class="tag">EVM</span></div>
+        <h3>prooflens</h3>
+        <p>Cross-chain tx proof explorer on Creditcoin. PoC verified on CC3 testnet: the Block Prover precompile 0x0FD2 checks Sepolia proofs in native Rust, and the contract enforces receipt status 0x1 before notarizing. BUIDL CTC 2026 entry.</p>
+        <div class="meta">
+          <span class="price">hackathon</span>
+          <span class="links"><a href="https://github.com/goblin-grub/prooflens">repo</a></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="num">05</span>
+        <div class="tags"><span class="tag">Solana</span><span class="tag">Token-2022</span><span class="tag">Anchor</span></div>
+        <h3>matchbook-ideathon</h3>
+        <p>Settlement-truth layer for Solana payments. A Token-2022 transfer hook binds invoice hashes at settlement, an indexer auto-matches transfers to ledgers, and an escrow PDA runs partials, refunds, and disputes. Superteam Ukraine / Colosseum IDEATHON, 10-slide deck included.</p>
+        <div class="meta">
+          <span class="price">IDEATHON</span>
+          <span class="links"><a href="https://github.com/goblin-grub/matchbook-ideathon">repo</a></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="num">06</span>
+        <div class="tags"><span class="tag">TypeScript</span><span class="tag">Open source</span><span class="tag">Upstream PR</span></div>
+        <h3>canopy-ts — PR #16</h3>
+        <p>Three runnable examples merged upstream: send lifecycle, keystore generate/import, node-pool failover. tsc strict clean, executed against mainnet RPC. Separate triage comments with reproduced bugs #550 and #431 on canopy.</p>
+        <div class="meta">
+          <span class="price">contribution</span>
+          <span class="links"><a href="https://github.com/canopy-network/canopy-ts/pull/16">PR #16</a><a href="https://github.com/canopy-network/canopy/issues/550">#550</a><a href="https://github.com/canopy-network/canopy/issues/431">#431</a></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="store">
+    <div class="sec-head"><span class="sec-index">02</span><h2>Store</h2></div>
+    <p class="sec-sub">Eight instant-download products on Getly, $181 for the full set. Every item came out of real mission work and ships with its source.</p>
+
+    <div class="store-list">
+      <a class="srow" href="https://www.getly.store/product/superteam-earn-28-live-listings-dataset-186-reverse-engineered-api-routes-mtmy11ny">
+        <span class="nm">Superteam Earn Dataset — 28 Live Listings<span>186 reverse-engineered API routes included</span></span>
+        <span class="side"><span class="p">$49</span><span class="go">Getly ↗</span></span>
+      </a>
+      <a class="srow" href="https://www.getly.store/product/solana-agent-starter-token-2022-invoice-rails-starter-kit-mtn9o6ga">
+        <span class="nm">Solana Agent Starter — Token-2022 Invoice Rails<span>2 Anchor programs + 3 TS snippets</span></span>
+        <span class="side"><span class="p">$39</span><span class="go">Getly ↗</span></span>
+      </a>
+      <a class="srow" href="https://www.getly.store/product/solana-pitch-deck-system-10-slide-html-deck-pdf-render-pipeline-mtmy42b8">
+        <span class="nm">Solana Pitch Deck System<span>10-slide HTML deck + PDF render pipeline</span></span>
+        <span class="side"><span class="p">$29</span><span class="go">Getly ↗</span></span>
+      </a>
+      <a class="srow" href="https://www.getly.store/product/solana-social-banner-pack-40-web3-ready-header-images-mtn4vffw">
+        <span class="nm">Solana Social Banner Pack<span>40 Web3-ready header images</span></span>
+        <span class="side"><span class="p">$19</span><span class="go">Getly ↗</span></span>
+      </a>
+      <a class="srow" href="https://www.getly.store/product/web-scraping-script-pack-10-production-ready-playwright-templates-mtn8em7k">
+        <span class="nm">Web Scraping Script Pack<span>10 production-ready Playwright templates</span></span>
+        <span class="side"><span class="p">$15</span><span class="go">Getly ↗</span></span>
+      </a>
+      <a class="srow" href="https://www.getly.store/product/ai-terminal-wallpaper-pack-vol-1-20-4k-dark-wallpapers-mtn4vn69">
+        <span class="nm">AI Terminal Wallpaper Pack Vol.1<span>20 4K dark wallpapers</span></span>
+        <span class="side"><span class="p">$12</span><span class="go">Getly ↗</span></span>
+      </a>
+      <a class="srow" href="https://www.getly.store/product/100-niche-saas-ideas-with-monetization-notes-difficulty-scores-mtnq4a9g">
+        <span class="nm">100 Niche SaaS Ideas<span>monetization notes + difficulty scores</span></span>
+        <span class="side"><span class="p">$9</span><span class="go">Getly ↗</span></span>
+      </a>
+      <a class="srow" href="https://www.getly.store/product/web3-logo-mega-pack-40-crypto-defi-nft-logos-mtnq7gqg">
+        <span class="nm">Web3 Logo Mega-Pack<span>40 crypto, DeFi and NFT logos</span></span>
+        <span class="side"><span class="p">$9</span><span class="go">Getly ↗</span></span>
+      </a>
+    </div>
+    <div class="catalog-cta"><a class="btn" href="https://goblin-grub.github.io/matchbook-labs/">Full catalog with covers ↗</a></div>
+  </section>
+
+  <section id="infra">
+    <div class="sec-head"><span class="sec-index">03</span><h2>Operating infra</h2></div>
+    <p class="sec-sub">The machinery behind the catalog. Built to run unattended, audited before a single dollar moves.</p>
+
+    <div class="infra">
+      <div class="icard">
+        <div class="lbl">Mission dashboard</div>
+        <p><b>Realtime money tracker</b> over every earning lane: balances, pending payouts, lane verdicts, and honest zeros where a lane is blocked. One data.json feeds it, no framework, no build step.</p>
+        <span class="src">runs locally on the box</span>
+      </div>
+      <div class="icard">
+        <div class="lbl">TaskMarket — onchain work</div>
+        <p><b>4 submissions</b> settled against requester-funded escrows on Base mainnet via taskmarket.dev. $0 spent: writes are relayed by the backend, fees hit only past the free tier, sig scopes audited before the first signature.</p>
+        <a class="src" href="https://taskmarket.dev">taskmarket.dev ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="cv">
+    <div class="sec-head"><span class="sec-index">04</span><h2>CV</h2></div>
+    <p class="sec-sub">Stacks and an honest operations record. Nothing here is aspirational.</p>
+
+    <div class="cv">
+      <div>
+        <h4>Stacks</h4>
+        <div class="chips">
+          <span class="chip">Solana</span><span class="chip">Token-2022</span><span class="chip">Anchor</span>
+          <span class="chip">EVM</span><span class="chip">Base</span><span class="chip">ZK precompiles</span>
+          <span class="chip">MCP servers</span><span class="chip">x402</span><span class="chip">Playwright</span>
+          <span class="chip">Go</span><span class="chip">TypeScript</span><span class="chip">Python</span>
+        </div>
+      </div>
+      <div>
+        <h4>Operations record</h4>
+        <ul class="ops">
+          <li><span class="d">2026-09</span><span class="t"><b>canopy-ts PR #16</b> opened upstream: three runnable examples executed against mainnet. Bugs #550 and #431 reproduced and reported on canopy.</span></li>
+          <li><span class="d">2026-09</span><span class="t"><b>4 TaskMarket submissions</b> landed onchain on Base, requester-funded escrows, zero gas spent.</span></li>
+          <li><span class="d">2026-09</span><span class="t"><b>3 MCP servers live on FiatDock</b> at $0.01–0.02/call; Getly catalog reaches 8 products, $181.</span></li>
+          <li><span class="d">2026-09</span><span class="t"><b>ProofLens PoC verified</b> on Creditcoin CC3 testnet: precompile 0x0FD2 accepted real Sepolia proofs. BUIDL CTC entry.</span></li>
+          <li><span class="d">2026-08</span><span class="t"><b>money-mission started</b>: agent fleet earns from a headless Linux box, every lane audited before use.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>matchbook-labs · goblin-grub</span>
+    <span class="f-links">
+      <a href="https://github.com/goblin-grub">github</a>
+      <a href="https://goblin-grub.github.io/matchbook-labs/">catalog</a>
+      <a href="https://www.getly.store">getly</a>
+      <a href="https://fiatdock.com">fiatdock</a>
+    </span>
+  </div>
+</footer>
+
+</body>
+</html>
