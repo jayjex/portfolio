@@ -20,6 +20,19 @@
     --acc-dim: #4ade8026;
     --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
     --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Helvetica, Arial, sans-serif;
+
+    /* shadcn design tokens (dark, green accent preserved) — pure CSS, no framework */
+    --background: #0a0a0b;
+    --foreground: #ececf1;
+    --card-fg: #ececf1;
+    --muted: #17171c;
+    --muted-foreground: #a1a1aa;
+    --secondary: #1b1b21;
+    --secondary-foreground: #d4d4dc;
+    --border: #26262e;
+    --ring: #4ade80;
+    --radius: 10px;
+
     color-scheme: dark;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -72,6 +85,25 @@
   }
   ::selection { background: var(--acc); color: #06130a; }
   a { color: var(--txt); text-decoration: none; }
+
+  /* shadcn focus ring */
+  :focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+  .btn:focus-visible, .srow:focus-visible, .chip:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);
+  }
+
+  /* reveal gate — JS ACTIVE only. No-JS / reduced-motion: fully visible, never gated.
+     Above-the-fold (hero) is NEVER gated: it plays instantly via gsap.from, no ScrollTrigger. */
+  html.gated [data-reveal],
+  html.gated [data-reveal-left],
+  html.gated [data-reveal-group]:not(.hero .stats),
+  html.gated [data-reveal-scale],
+  html.gated [data-reveal-lines] .chip,
+  html.gated [data-reveal-lines] .cv h4,
+  html.gated [data-reveal-lines] .ops li { visibility: hidden; }
+  html.gated .hero .stats { opacity: 0; }
+  html.gated .hero .stats > * { opacity: 0; transform: translateY(14px); }
   .wrap { max-width: 1060px; margin: 0 auto; padding: 0 1.5rem; }
 
   /* ── nav ── */
@@ -114,13 +146,17 @@
   .lede b { color: var(--txt); font-weight: 600; }
   .hero-cta { display: flex; gap: 0.9rem; margin-top: 2.2rem; flex-wrap: wrap; }
   .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem;
     font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.08em;
-    padding: 0.7rem 1.25rem; border: 1px solid var(--line2); border-radius: 6px;
-    transition: border-color .15s, background .15s, transform .15s;
+    padding: 0.7rem 1.25rem; border: 1px solid var(--border); border-radius: calc(var(--radius) - 2px);
+    background: transparent; color: var(--foreground);
+    transition: background .15s, border-color .15s, color .15s, box-shadow .15s;
   }
-  .btn:hover { border-color: var(--acc); transform: translateY(-1px); }
+  .btn:hover { background: var(--muted); border-color: #34343d; }
   .btn.solid { background: var(--acc); border-color: var(--acc); color: #06130a; font-weight: 600; }
-  .btn.solid:hover { background: #6cf09a; }
+  .btn.solid:hover { background: #5ee896; }
+  .btn.ghost { border-color: transparent; background: transparent; }
+  .btn.ghost:hover { background: var(--muted); }
 
   .stats {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
@@ -147,7 +183,8 @@
   /* ── work cards ── */
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
   .card {
-    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
     padding: 1.4rem 1.4rem 1.3rem; display: flex; flex-direction: column;
     transition: border-color .18s, transform .18s, background .18s, box-shadow .18s;
     position: relative;
@@ -155,13 +192,15 @@
     will-change: transform;
   }
   .card:hover {
-    border-color: #4ade8059; --ty: -3px; background: #15151a;
-    box-shadow: 0 0 0 1px rgba(74,222,128,0.14), 0 10px 34px rgba(74,222,128,0.08);
+    border-color: #3a3a44; --ty: -3px; background: #15151a;
+    box-shadow: 0 0 0 1px rgba(74,222,128,0.12), 0 8px 30px rgba(0,0,0,0.35);
   }
   .card .tags { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 0.9rem; }
   .tag {
+    display: inline-flex; align-items: center;
     font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--faint); border: 1px solid var(--line2); border-radius: 99px; padding: 0.12rem 0.55rem;
+    color: var(--muted-foreground); background: var(--secondary);
+    border: 1px solid transparent; border-radius: 9999px; padding: 0.14rem 0.6rem;
   }
   .card h3 { font-size: 1.08rem; letter-spacing: -0.01em; font-weight: 650; }
   .card p { color: var(--dim); font-size: 0.885rem; margin: 0.5rem 0 1.1rem; flex: 1; }
@@ -176,30 +215,41 @@
   }
 
   /* ── store ── */
-  .store-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 0.55rem; }
+  .store-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 0.65rem; }
   .srow {
     display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-    padding: 0.95rem 1.2rem; background: var(--card); border: 1px solid var(--line);
-    border-radius: 8px; transition: border-color .15s, transform .15s;
+    padding: 0.95rem 1.2rem; background: var(--card); border: 1px solid var(--border);
+    border-radius: calc(var(--radius) - 2px); transition: border-color .15s, background .15s, box-shadow .15s;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   }
-  .srow:hover { border-color: #4ade8059; transform: translateX(3px); }
+  .srow:hover { border-color: #3a3a44; background: #15151a; }
   .srow .nm { font-size: 0.92rem; font-weight: 550; }
-  .srow .nm span { display: block; font-weight: 400; color: var(--faint); font-size: 0.78rem; margin-top: 0.1rem; }
+  .srow .nm span { display: block; font-weight: 400; color: var(--muted-foreground); font-size: 0.78rem; margin-top: 0.1rem; }
   .srow .side { display: flex; align-items: baseline; gap: 1rem; flex-shrink: 0; }
   .srow .p { font-family: var(--mono); font-size: 0.85rem; color: var(--acc); }
-  .srow .go { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.08em; color: var(--faint); text-transform: uppercase; transition: color .15s; }
+  .srow .go { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.08em; color: var(--muted-foreground); text-transform: uppercase; transition: color .15s; }
   .srow:hover .go { color: var(--acc); }
-  .catalog-cta { margin-top: 1.6rem; }
+
+  /* shadcn secondary badge for Live / In review */
+  .badge {
+    display: inline-flex; align-items: center; white-space: nowrap;
+    font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase;
+    border-radius: 9999px; padding: 0.14rem 0.55rem; border: 1px solid transparent;
+  }
+  .badge.live { background: rgba(74,222,128,0.12); color: var(--acc); border-color: rgba(74,222,128,0.25); }
+  .badge.review { background: var(--secondary); color: var(--muted-foreground); }
+
+  .catalog-cta { margin-top: 3rem; }
 
   /* ── infra ── */
   .infra { display: grid; grid-template-columns: 1fr; gap: 1rem; }
   @media (min-width: 720px) { .infra { grid-template-columns: 1fr 1fr; } }
-  .icard { border: 1px solid var(--line); border-radius: 10px; padding: 1.5rem; background: var(--bg2); transition: border-color .18s; }
-  .icard:hover { border-color: #4ade8040; }
+  .icard { border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; background: var(--card); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); transition: border-color .18s; }
+  .icard:hover { border-color: #3a3a44; }
   .icard .lbl { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--acc); margin-bottom: 0.7rem; }
-  .icard p { color: var(--dim); font-size: 0.9rem; }
-  .icard p b { color: var(--txt); font-weight: 600; }
-  .icard .src { font-family: var(--mono); font-size: 0.72rem; margin-top: 0.9rem; display: inline-block; color: var(--faint); }
+  .icard p { color: #b9b9c2; font-size: 0.9rem; }
+  .icard p b { color: var(--foreground); font-weight: 600; }
+  .icard .src { font-family: var(--mono); font-size: 0.72rem; margin-top: 0.9rem; display: inline-block; color: #b9b9c2; }
   .icard .src:hover { color: var(--acc); }
 
   /* ── cv ── */
@@ -208,11 +258,11 @@
   .cv h4 { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint); margin-bottom: 1rem; }
   .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
   .chip {
-    font-family: var(--mono); font-size: 0.74rem; color: var(--txt);
-    border: 1px solid var(--line2); border-radius: 6px; padding: 0.3rem 0.7rem;
-    transition: border-color .15s, color .15s;
+    font-family: var(--mono); font-size: 0.74rem; color: var(--secondary-foreground);
+    background: var(--secondary); border: 1px solid transparent; border-radius: 9999px; padding: 0.3rem 0.75rem;
+    transition: background .15s, color .15s;
   }
-  .chip:hover { border-color: var(--acc); color: var(--acc); }
+  .chip:hover { background: #232329; color: var(--foreground); }
   .cv .ops li {
     list-style: none; display: grid; grid-template-columns: 5.4rem 1fr; gap: 1.1rem;
     padding: 0.75rem 0; border-bottom: 1px solid var(--line); font-size: 0.9rem;
@@ -263,7 +313,7 @@
       <a class="btn" href="#work">See the work</a>
     </div>
 
-    <div class="stats" data-reveal-group>
+    <div class="stats">
       <div class="stat"><div class="n">19</div><div class="l">Paid products</div></div>
       <div class="stat"><div class="n">$302</div><div class="l">Catalog value</div></div>
       <div class="stat"><div class="n">3</div><div class="l">MCP servers</div></div>
@@ -358,79 +408,79 @@
     <div class="store-list" data-reveal-group>
       <a class="srow" href="https://www.getly.store/product/superteam-earn-28-live-listings-dataset-186-reverse-engineered-api-routes-mtmy11ny">
         <span class="nm">Superteam Earn Dataset — 28 Live Listings<span>186 reverse-engineered API routes included</span></span>
-        <span class="side"><span class="p">$49</span><span class="go">Getly ↗</span></span>
+        <span class="side"><span class="p">$49</span><span class="go badge live">Getly ↗</span></span>
       </a>
       <a class="srow" href="https://www.getly.store/product/solana-agent-starter-token-2022-invoice-rails-starter-kit-mtn9o6ga">
         <span class="nm">Solana Agent Starter — Token-2022 Invoice Rails<span>2 Anchor programs + 3 TS snippets</span></span>
-        <span class="side"><span class="p">$39</span><span class="go">Getly ↗</span></span>
+        <span class="side"><span class="p">$39</span><span class="go badge live">Getly ↗</span></span>
       </a>
       <a class="srow" href="https://www.getly.store/product/solana-pitch-deck-system-10-slide-html-deck-pdf-render-pipeline-mtmy42b8">
         <span class="nm">Solana Pitch Deck System<span>10-slide HTML deck + PDF render pipeline</span></span>
-        <span class="side"><span class="p">$29</span><span class="go">Getly ↗</span></span>
+        <span class="side"><span class="p">$29</span><span class="go badge live">Getly ↗</span></span>
       </a>
       <a class="srow" href="https://www.getly.store/product/solana-social-banner-pack-40-web3-ready-header-images-mtn4vffw">
         <span class="nm">Solana Social Banner Pack<span>40 Web3-ready header images</span></span>
-        <span class="side"><span class="p">$19</span><span class="go">Getly ↗</span></span>
+        <span class="side"><span class="p">$19</span><span class="go badge live">Getly ↗</span></span>
       </a>
       <a class="srow" href="https://www.getly.store/product/web-scraping-script-pack-10-production-ready-playwright-templates-mtn8em7k">
         <span class="nm">Web Scraping Script Pack<span>10 production-ready Playwright templates</span></span>
-        <span class="side"><span class="p">$15</span><span class="go">Getly ↗</span></span>
+        <span class="side"><span class="p">$15</span><span class="go badge live">Getly ↗</span></span>
       </a>
       <a class="srow" href="https://www.getly.store/product/ai-terminal-wallpaper-pack-vol-1-20-4k-dark-wallpapers-mtn4vn69">
         <span class="nm">AI Terminal Wallpaper Pack Vol.1<span>20 4K dark wallpapers</span></span>
-        <span class="side"><span class="p">$12</span><span class="go">Getly ↗</span></span>
+        <span class="side"><span class="p">$12</span><span class="go badge live">Getly ↗</span></span>
       </a>
       <a class="srow" href="https://www.getly.store">
         <span class="nm">100 Niche SaaS Ideas<span>monetization notes + difficulty scores</span></span>
-        <span class="side"><span class="p">$9</span><span class="go">Getly ↗</span></span>
+        <span class="side"><span class="p">$9</span><span class="go badge live">Getly ↗</span></span>
       </a>
       <a class="srow" href="https://www.getly.store">
         <span class="nm">Web3 Logo Mega-Pack<span>40 crypto, DeFi and NFT logos</span></span>
-        <span class="side"><span class="p">$9</span><span class="go">Getly ↗</span></span>
+        <span class="side"><span class="p">$9</span><span class="go badge live">Getly ↗</span></span>
       </a>
       <a class="srow" href="https://www.getly.store">
         <span class="nm">Web3 Icon Mega-Pack<span>50 crypto, DeFi and dev-tool icons</span></span>
-        <span class="side"><span class="p">$9</span><span class="go">In review</span></span>
+        <span class="side"><span class="p">$9</span><span class="go badge review">In review</span></span>
       </a>
       <a class="srow" href="https://www.getly.store">
         <span class="nm">Pitch Deck Slide Pack<span>20 editable web3/startup slide templates</span></span>
-        <span class="side"><span class="p">$12</span><span class="go">In review</span></span>
+        <span class="side"><span class="p">$12</span><span class="go badge review">In review</span></span>
       </a>
       <a class="srow" href="https://www.getly.store">
         <span class="nm">AI Terminal Wallpaper Pack Vol.2<span>20 new 4K dark wallpapers</span></span>
-        <span class="side"><span class="p">$12</span><span class="go">In review</span></span>
+        <span class="side"><span class="p">$12</span><span class="go badge review">In review</span></span>
       </a>
       <a class="srow" href="https://www.getly.store">
         <span class="nm">Web3 KPI Spreadsheet Pack<span>5 Google Sheets / Excel templates</span></span>
-        <span class="side"><span class="p">$10</span><span class="go">In review</span></span>
+        <span class="side"><span class="p">$10</span><span class="go badge review">In review</span></span>
       </a>
       <a class="srow" href="https://www.getly.store">
         <span class="nm">Web3 Grants Ecosystem Funds Database 2026<span>38 verified funding sources</span></span>
-        <span class="side"><span class="p">$15</span><span class="go">In review</span></span>
+        <span class="side"><span class="p">$15</span><span class="go badge review">In review</span></span>
       </a>
       <a class="srow" href="https://www.getly.store">
         <span class="nm">500 AI Prompts for Etsy &amp; E-commerce Sellers<span>listings, photos, SEO, marketing</span></span>
-        <span class="side"><span class="p">$12</span><span class="go">In review</span></span>
+        <span class="side"><span class="p">$12</span><span class="go badge review">In review</span></span>
       </a>
       <a class="srow" href="https://www.getly.store">
         <span class="nm">500 AI Prompts Pack<span>crypto, web3 and trading prompts</span></span>
-        <span class="side"><span class="p">$12</span><span class="go">In review</span></span>
+        <span class="side"><span class="p">$12</span><span class="go badge review">In review</span></span>
       </a>
       <a class="srow" href="https://www.getly.store">
         <span class="nm">Web3 Builder OS<span>multi-chain Notion dashboard</span></span>
-        <span class="side"><span class="p">$15</span><span class="go">In review</span></span>
+        <span class="side"><span class="p">$15</span><span class="go badge review">In review</span></span>
       </a>
       <a class="srow" href="https://www.getly.store">
         <span class="nm">30 Social Media Templates for web3<span>X, Instagram, LinkedIn — edit guide included</span></span>
-        <span class="side"><span class="p">$10</span><span class="go">In review</span></span>
+        <span class="side"><span class="p">$10</span><span class="go badge review">In review</span></span>
       </a>
       <a class="srow" href="https://www.getly.store">
         <span class="nm">Crypto Trader Desk Kit<span>12 printable cheat sheets, A4 / US Letter</span></span>
-        <span class="side"><span class="p">$8</span><span class="go">In review</span></span>
+        <span class="side"><span class="p">$8</span><span class="go badge review">In review</span></span>
       </a>
       <a class="srow" href="https://www.getly.store">
         <span class="nm">Dark Tech-Humor Sticker Pack Vol.1<span>12 print-ready stickers</span></span>
-        <span class="side"><span class="p">$6</span><span class="go">In review</span></span>
+        <span class="side"><span class="p">$6</span><span class="go badge review">In review</span></span>
       </a>
     </div>
     <div class="catalog-cta"><a class="btn" href="https://jayjex.github.io/matchbook-labs/">Full catalog with covers ↗</a></div>
@@ -509,59 +559,77 @@
     return; // content stays fully visible without motion libs
   }
   gsap.registerPlugin(ScrollTrigger);
+  var docEl = document.documentElement;
 
-  /* every reveal uses once:true + play-none-none-none → once revealed, elements
-     stay visible forever, any scroll direction. Content can never disappear. */
+  /* safety net: force-show helper — run for any reveal target right before its tween
+     (or immediately if it is above the fold). Kills any stuck-hidden state. */
+  function show(targets) {
+    gsap.utils.toArray(targets).forEach(function (el) {
+      gsap.set(el, { visibility: "visible", opacity: 1 });
+    });
+  }
+
+  /* every reveal uses fromTo with explicit end values + once:true → once revealed,
+     elements stay visible forever, any scroll direction. Content can never disappear. */
   gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", function () {
+    docEl.classList.add("gated");
+
     /* progress bar */
     gsap.to(".progress", {
       scaleX: 1, ease: "none",
       scrollTrigger: { start: 0, end: "max", scrub: 0.3 }
     });
 
-    /* hero entrance (one-shot) — NO scrubbed fade-out: header text stays readable
-       at any scroll position */
-    gsap.from(".hero-in", {
-      y: 34, opacity: 0, duration: 0.9, ease: "power3.out",
-      scrollTrigger: { trigger: ".hero", start: "top top", toggleActions: "play none none none", once: true }
-    });
+    /* hero entrance — above the fold: plays immediately on load, NOT scroll-gated */
+    show(".hero-in");
+    gsap.from(".hero-in", { y: 18, opacity: 0, duration: 0.55, ease: "power2.out" });
+
+    /* hero stats — above the fold: children rise immediately, numbers count up */
+    show(".stats");
+    gsap.fromTo(".stats > *", { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power2.out", stagger: 0.06, delay: 0.15 });
 
     /* single-element reveals: section heads + subs */
     gsap.utils.toArray("[data-reveal]").forEach(function (el) {
-      gsap.from(el, {
-        y: 24, opacity: 0, duration: 0.7, ease: "power2.out",
+      show(el);
+      gsap.fromTo(el, { y: 24, opacity: 0 }, {
+        y: 0, opacity: 1, duration: 0.7, ease: "power2.out",
         scrollTrigger: { trigger: el, start: "top 86%", toggleActions: "play none none none", once: true }
       });
     });
 
     /* store rows: slide-in from the left, staggered */
     gsap.utils.toArray("[data-reveal-left]").forEach(function (group) {
-      gsap.from(group.children, {
-        x: -36, opacity: 0, duration: 0.7, ease: "power3.out", stagger: 0.07,
+      show(group.children);
+      gsap.fromTo(group.children, { x: -36, opacity: 0 }, {
+        x: 0, opacity: 1, duration: 0.7, ease: "power3.out", stagger: 0.05,
         scrollTrigger: { trigger: group, start: "top 86%", toggleActions: "play none none none", once: true }
       });
     });
 
     /* infra cards: scale-in */
     gsap.utils.toArray("[data-reveal-scale]").forEach(function (group) {
-      gsap.from(group.children, {
-        scale: 0.88, opacity: 0, transformOrigin: "50% 60%", duration: 0.7, ease: "power3.out", stagger: 0.1,
+      show(group.children);
+      gsap.fromTo(group.children, { scale: 0.88, opacity: 0, transformOrigin: "50% 60%" }, {
+        scale: 1, opacity: 1, duration: 0.7, ease: "power3.out", stagger: 0.1,
         scrollTrigger: { trigger: group, start: "top 86%", toggleActions: "play none none none", once: true }
       });
     });
 
     /* cv: fade per line (chips + ops rows), once */
     gsap.utils.toArray("[data-reveal-lines]").forEach(function (group) {
-      gsap.from(group.querySelectorAll(".chips .chip, .cv h4, .ops li"), {
-        y: 14, opacity: 0, duration: 0.5, ease: "power2.out", stagger: 0.05,
+      var targets = group.querySelectorAll(".chips .chip, .cv h4, .ops li");
+      show(targets);
+      gsap.fromTo(targets, { y: 14, opacity: 0 }, {
+        y: 0, opacity: 1, duration: 0.5, ease: "power2.out", stagger: 0.05,
         scrollTrigger: { trigger: group, start: "top 88%", toggleActions: "play none none none", once: true }
       });
     });
 
-    /* grouped reveals: cards, stats — staggered rise */
+    /* grouped reveals: cards — staggered rise */
     gsap.utils.toArray("[data-reveal-group]").forEach(function (group) {
-      gsap.from(group.children, {
-        y: 28, opacity: 0, duration: 0.8, ease: "power3.out", stagger: 0.08,
+      show(group.children);
+      gsap.fromTo(group.children, { y: 28, opacity: 0 }, {
+        y: 0, opacity: 1, duration: 0.8, ease: "power3.out", stagger: 0.05,
         scrollTrigger: { trigger: group, start: "top 86%", toggleActions: "play none none none", once: true }
       });
     });
@@ -630,7 +698,11 @@
 
   /* if the user flips reduced-motion on mid-session, drop remaining tweens */
   reduceMQ.addEventListener("change", function (e) {
-    if (e.matches) { gsap.matchMedia().revert(); document.documentElement.classList.add("static-hero"); }
+    if (e.matches) {
+      gsap.matchMedia().revert();
+      docEl.classList.remove("gated");
+      gsap.set("*", { visibility: "visible", opacity: 1 });
+    }
   });
 })();
 </script>
