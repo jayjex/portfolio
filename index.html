@@ -39,14 +39,22 @@
     pointer-events: none;
   }
   .bg3d {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
+    position: fixed; inset: 0; z-index: 0;
+    width: 100vw; height: 100vh;
     pointer-events: none;
   }
+  .hero, main, footer { position: relative; z-index: 1; }
   .static-hero .hero {
     background:
       radial-gradient(900px 520px at 72% -10%, rgba(74,222,128,0.10), transparent 62%),
       radial-gradient(600px 400px at 12% 10%, rgba(74,222,128,0.06), transparent 70%);
+  }
+  .static-hero body {
+    background:
+      radial-gradient(1100px 620px at 75% -5%, rgba(74,222,128,0.07), transparent 60%),
+      radial-gradient(800px 500px at 8% 30%, rgba(74,222,128,0.05), transparent 65%),
+      var(--bg);
+    background-attachment: fixed;
   }
   body {
     background: var(--bg);
@@ -118,6 +126,11 @@
   /* ── sections ── */
   section { padding: 5rem 0 3.5rem; }
   section + section { border-top: 1px solid var(--line); }
+  main > section { position: relative; }
+  .divider {
+    position: absolute; top: -1px; left: 0; width: 100%; height: 2px;
+    pointer-events: none; overflow: visible; display: block;
+  }
   .sec-head { display: flex; align-items: baseline; gap: 1.2rem; margin-bottom: 0.7rem; }
   .sec-index { font-family: var(--mono); font-size: 0.78rem; color: var(--acc); }
   h2 { font-size: clamp(1.5rem, 3vw, 2.1rem); letter-spacing: -0.025em; font-weight: 650; }
@@ -130,9 +143,11 @@
     padding: 1.4rem 1.4rem 1.3rem; display: flex; flex-direction: column;
     transition: border-color .18s, transform .18s, background .18s, box-shadow .18s;
     position: relative;
+    transform: perspective(720px) translateY(var(--ty, 0px)) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    will-change: transform;
   }
   .card:hover {
-    border-color: #4ade8059; transform: translateY(-3px); background: #15151a;
+    border-color: #4ade8059; --ty: -3px; background: #15151a;
     box-shadow: 0 0 0 1px rgba(74,222,128,0.14), 0 10px 34px rgba(74,222,128,0.08);
   }
   .card .tags { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 0.9rem; }
@@ -211,6 +226,8 @@
 
 <div class="progress" aria-hidden="true"></div>
 
+<canvas id="bg3d" class="bg3d" aria-hidden="true"></canvas>
+
 <nav>
   <div class="wrap nav-in">
     <a class="brand" href="#top"><b>■</b> matchbook-labs</a>
@@ -225,7 +242,6 @@
 </nav>
 
 <header class="hero" id="top">
-  <canvas id="bg3d" class="bg3d" aria-hidden="true"></canvas>
   <div class="wrap hero-in">
     <div class="kicker">Matchbook Labs · solo · headless Linux box</div>
     <h1>Earning infrastructure for <em>AI agents</em>.</h1>
@@ -253,6 +269,7 @@
 <main class="wrap">
 
   <section id="work">
+    <svg class="divider" viewBox="0 0 1200 2" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="1" x2="1200" y2="1" pathLength="1" stroke="#4ade80" stroke-width="2" stroke-dasharray="1" stroke-dashoffset="1" vector-effect="non-scaling-stroke"/></svg>
     <div class="sec-head" data-reveal><span class="sec-index">01</span><h2>Selected work</h2></div>
     <p class="sec-sub" data-reveal>Repos with production deployments attached. Three earn per call on FiatDock; the rest are entries and upstream contributions.</p>
 
@@ -326,10 +343,11 @@
   </section>
 
   <section id="store">
+    <svg class="divider" viewBox="0 0 1200 2" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="1" x2="1200" y2="1" pathLength="1" stroke="#4ade80" stroke-width="2" stroke-dasharray="1" stroke-dashoffset="1" vector-effect="non-scaling-stroke"/></svg>
     <div class="sec-head" data-reveal><span class="sec-index">02</span><h2>Store</h2></div>
     <p class="sec-sub" data-reveal>Eight instant-download products on Getly, $181 for the full set. Every item came out of real mission work and ships with its source.</p>
 
-    <div class="store-list" data-reveal-group>
+    <div class="store-list" data-reveal-group data-reveal-left>
       <a class="srow" href="https://www.getly.store/product/superteam-earn-28-live-listings-dataset-186-reverse-engineered-api-routes-mtmy11ny">
         <span class="nm">Superteam Earn Dataset — 28 Live Listings<span>186 reverse-engineered API routes included</span></span>
         <span class="side"><span class="p">$49</span><span class="go">Getly ↗</span></span>
@@ -368,10 +386,11 @@
   </section>
 
   <section id="infra">
+    <svg class="divider" viewBox="0 0 1200 2" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="1" x2="1200" y2="1" pathLength="1" stroke="#4ade80" stroke-width="2" stroke-dasharray="1" stroke-dashoffset="1" vector-effect="non-scaling-stroke"/></svg>
     <div class="sec-head" data-reveal><span class="sec-index">03</span><h2>Operating infra</h2></div>
     <p class="sec-sub" data-reveal>The machinery behind the catalog. Built to run unattended, audited before a single dollar moves.</p>
 
-    <div class="infra" data-reveal-group>
+    <div class="infra" data-reveal-group data-reveal-scale>
       <div class="icard">
         <div class="lbl">Mission dashboard</div>
         <p><b>Realtime money tracker</b> over every earning lane: balances, pending payouts, lane verdicts, and honest zeros where a lane is blocked. One data.json feeds it, no framework, no build step.</p>
@@ -386,10 +405,11 @@
   </section>
 
   <section id="cv">
+    <svg class="divider" viewBox="0 0 1200 2" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="1" x2="1200" y2="1" pathLength="1" stroke="#4ade80" stroke-width="2" stroke-dasharray="1" stroke-dashoffset="1" vector-effect="non-scaling-stroke"/></svg>
     <div class="sec-head" data-reveal><span class="sec-index">04</span><h2>CV</h2></div>
     <p class="sec-sub" data-reveal>Stacks and an honest operations record. Nothing here is aspirational.</p>
 
-    <div class="cv" data-reveal-group>
+    <div class="cv" data-reveal-lines>
       <div>
         <h4>Stacks</h4>
         <div class="chips">
@@ -431,13 +451,15 @@
 <script>
 (function () {
   "use strict";
-  if (!window.gsap || !window.ScrollTrigger) {
+  var reduceMQ = matchMedia("(prefers-reduced-motion: reduce)");
+  if (!window.gsap || !window.ScrollTrigger || reduceMQ.matches) {
     document.documentElement.classList.add("static-hero");
     return; // content stays fully visible without motion libs
   }
   gsap.registerPlugin(ScrollTrigger);
-  var reduced = matchMedia("(prefers-reduced-motion: reduce)");
 
+  /* every reveal uses once:true + play-none-none-none → once revealed, elements
+     stay visible forever, any scroll direction. Content can never disappear. */
   gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", function () {
     /* progress bar */
     gsap.to(".progress", {
@@ -445,26 +467,58 @@
       scrollTrigger: { start: 0, end: "max", scrub: 0.3 }
     });
 
-    /* hero: slow fade-in + parallax drift on scroll */
-    gsap.from(".hero-in", { y: 34, opacity: 0, duration: 0.9, ease: "power3.out" });
-    gsap.to(".hero-in", {
-      yPercent: 10, ease: "none",
-      scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
+    /* hero entrance (one-shot) — NO scrubbed fade-out: header text stays readable
+       at any scroll position */
+    gsap.from(".hero-in", {
+      y: 34, opacity: 0, duration: 0.9, ease: "power3.out",
+      scrollTrigger: { trigger: ".hero", start: "top top", toggleActions: "play none none none", once: true }
     });
 
     /* single-element reveals: section heads + subs */
     gsap.utils.toArray("[data-reveal]").forEach(function (el) {
       gsap.from(el, {
         y: 24, opacity: 0, duration: 0.7, ease: "power2.out",
-        scrollTrigger: { trigger: el, start: "top 86%", once: true }
+        scrollTrigger: { trigger: el, start: "top 86%", toggleActions: "play none none none", once: true }
       });
     });
 
-    /* grouped reveals: cards, store rows, infra, cv, stats — staggered rise */
+    /* store rows: slide-in from the left, staggered */
+    gsap.utils.toArray("[data-reveal-left]").forEach(function (group) {
+      gsap.from(group.children, {
+        x: -36, opacity: 0, duration: 0.7, ease: "power3.out", stagger: 0.07,
+        scrollTrigger: { trigger: group, start: "top 86%", toggleActions: "play none none none", once: true }
+      });
+    });
+
+    /* infra cards: scale-in */
+    gsap.utils.toArray("[data-reveal-scale]").forEach(function (group) {
+      gsap.from(group.children, {
+        scale: 0.88, opacity: 0, transformOrigin: "50% 60%", duration: 0.7, ease: "power3.out", stagger: 0.1,
+        scrollTrigger: { trigger: group, start: "top 86%", toggleActions: "play none none none", once: true }
+      });
+    });
+
+    /* cv: fade per line (chips + ops rows), once */
+    gsap.utils.toArray("[data-reveal-lines]").forEach(function (group) {
+      gsap.from(group.querySelectorAll(".chips .chip, .cv h4, .ops li"), {
+        y: 14, opacity: 0, duration: 0.5, ease: "power2.out", stagger: 0.05,
+        scrollTrigger: { trigger: group, start: "top 88%", toggleActions: "play none none none", once: true }
+      });
+    });
+
+    /* grouped reveals: cards, stats — staggered rise */
     gsap.utils.toArray("[data-reveal-group]").forEach(function (group) {
       gsap.from(group.children, {
         y: 28, opacity: 0, duration: 0.8, ease: "power3.out", stagger: 0.08,
-        scrollTrigger: { trigger: group, start: "top 86%", once: true }
+        scrollTrigger: { trigger: group, start: "top 86%", toggleActions: "play none none none", once: true }
+      });
+    });
+
+    /* section dividers: hologram line draws across on enter */
+    gsap.utils.toArray(".divider line").forEach(function (line) {
+      gsap.fromTo(line, { attr: { "stroke-dashoffset": 1 } }, {
+        attr: { "stroke-dashoffset": 0 }, duration: 1.1, ease: "power2.inOut",
+        scrollTrigger: { trigger: line.closest("section"), start: "top 82%", toggleActions: "play none none none", once: true }
       });
     });
 
@@ -478,12 +532,25 @@
       gsap.to(obj, {
         v: target, duration: 1.0, delay: 0.15 + i * 0.07, ease: "expo.out",
         onUpdate: function () { el.textContent = m[1] + Math.round(obj.v) + m[3]; },
-        scrollTrigger: { trigger: el, start: "top 95%", once: true }
+        scrollTrigger: { trigger: el, start: "top 95%", toggleActions: "play none none none", once: true }
       });
     });
 
-    /* magnetic CTA — fine pointers only */
+    /* project cards: light 3D tilt on hover (fine pointers only) */
     if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      gsap.utils.toArray("#work .card").forEach(function (card) {
+        card.style.transformStyle = "preserve-3d";
+        var rx = gsap.quickTo(card, "rotateX", { duration: 0.45, ease: "power3.out" });
+        var ry = gsap.quickTo(card, "rotateY", { duration: 0.45, ease: "power3.out" });
+        card.addEventListener("mousemove", function (e) {
+          var r = card.getBoundingClientRect();
+          ry(((e.clientX - r.left) / r.width - 0.5) * 9);
+          rx(-((e.clientY - r.top) / r.height - 0.5) * 9);
+        });
+        card.addEventListener("mouseleave", function () { rx(0); ry(0); });
+      });
+
+      /* magnetic CTA */
       var btn = document.querySelector(".btn.solid");
       if (btn) {
         var xTo = gsap.quickTo(btn, "x", { duration: 0.4, ease: "power3.out" });
@@ -496,10 +563,21 @@
         btn.addEventListener("mouseleave", function () { xTo(0); yTo(0); });
       }
     }
+
+    /* footer: particles converge toward the footer band */
+    var foot = document.querySelector("footer");
+    if (foot && window.bg3dAPI && typeof window.bg3dAPI.setConverge === "function") {
+      var conv = { v: 0 };
+      gsap.to(conv, {
+        v: 0.75, ease: "none",
+        scrollTrigger: { trigger: foot, start: "top bottom", end: "bottom bottom", scrub: true },
+        onUpdate: function () { window.bg3dAPI.setConverge(conv.v); }
+      });
+    }
   });
 
   /* if the user flips reduced-motion on mid-session, drop remaining tweens */
-  reduced.addEventListener("change", function (e) {
+  reduceMQ.addEventListener("change", function (e) {
     if (e.matches) { gsap.matchMedia().revert(); document.documentElement.classList.add("static-hero"); }
   });
 })();
@@ -512,7 +590,7 @@
   var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   var small = matchMedia("(max-width: 767px)").matches;
   var noWebGL = !window.WebGLRenderingContext;
-  if (reduced || small || noWebGL) {
+  if (reduced || noWebGL) {
     canvas.remove();
     document.documentElement.classList.add("static-hero");
     return; // static gradient fallback
@@ -522,38 +600,37 @@
     .then(THREE => {
       var renderer;
       try {
-        renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true, powerPreference: "low-power" });
+        renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: !small, powerPreference: "low-power" });
       } catch (err) {
         canvas.remove();
         document.documentElement.classList.add("static-hero");
         return;
       }
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2)); // DPR cap
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, small ? 1.5 : 2)); // DPR cap
 
-      var hero = canvas.closest(".hero");
       var scene = new THREE.Scene();
-      var camera = new THREE.PerspectiveCamera(58, 1, 0.1, 40);
+      var camera = new THREE.PerspectiveCamera(58, 1, 0.1, 60);
       camera.position.set(0, 0, 6);
 
-      /* particle field — green accent + faint gray dust */
-      var COUNT = 1400;
+      /* full-page particle field — green accent + faint gray dust (fewer on mobile) */
+      var COUNT = small ? 400 : 1400;
       var pos = new Float32Array(COUNT * 3);
       var col = new Float32Array(COUNT * 3);
       var accent = new THREE.Color(0x4ade80);
       var dust = new THREE.Color(0x9ca3af);
       for (var i = 0; i < COUNT; i++) {
         pos[i * 3] = (Math.random() - 0.5) * 18;
-        pos[i * 3 + 1] = (Math.random() - 0.5) * 10;
-        pos[i * 3 + 2] = (Math.random() - 0.5) * 8 - 1;
+        pos[i * 3 + 1] = (Math.random() - 0.5) * 11;
+        pos[i * 3 + 2] = (Math.random() - 0.5) * 9 - 1;
         var c = Math.random() < 0.28 ? accent : dust;
-        var dim = 0.35 + Math.random() * 0.65;
+        var dim = 0.3 + Math.random() * 0.6;
         col[i * 3] = c.r * dim; col[i * 3 + 1] = c.g * dim; col[i * 3 + 2] = c.b * dim;
       }
       var pGeo = new THREE.BufferGeometry();
       pGeo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
       pGeo.setAttribute("color", new THREE.BufferAttribute(col, 3));
       var pMat = new THREE.PointsMaterial({
-        size: 0.045, vertexColors: true, transparent: true, opacity: 0.85,
+        size: 0.045, vertexColors: true, transparent: true, opacity: small ? 0.5 : 0.6,
         blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true
       });
       var points = new THREE.Points(pGeo, pMat);
@@ -561,22 +638,38 @@
 
       /* floating wireframe geometry */
       var icoGeo = new THREE.IcosahedronGeometry(1.6, 1);
-      var icoMat = new THREE.MeshBasicMaterial({ color: 0x4ade80, wireframe: true, transparent: true, opacity: 0.13 });
+      var icoMat = new THREE.MeshBasicMaterial({ color: 0x4ade80, wireframe: true, transparent: true, opacity: 0.11 });
       var ico = new THREE.Mesh(icoGeo, icoMat);
       ico.position.set(2.6, 0.2, -1.5);
       scene.add(ico);
 
       var disposables = [pGeo, pMat, icoGeo, icoMat];
+      var baseY = pos.slice(); // rest Y for converge
+
+      /* scroll progress → camera dollies forward; converge squeezes field toward band */
+      var scrollP = 0, converge = 0;
+      var maxScroll = 1;
+      function measure() {
+        maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      }
+      function onScroll() {
+        scrollP = Math.min(1, Math.max(0, (window.scrollY || window.pageYOffset) / maxScroll));
+      }
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+
+      window.bg3dAPI = { setConverge: function (v) { converge = v; } };
 
       function resize() {
-        var w = hero.clientWidth, h = hero.clientHeight;
+        var w = window.innerWidth, h = window.innerHeight;
         if (!w || !h) return;
         renderer.setSize(w, h, false);
         camera.aspect = w / h;
         camera.updateProjectionMatrix();
       }
       resize();
-      window.addEventListener("resize", resize);
+      measure();
+      window.addEventListener("resize", function () { resize(); measure(); });
 
       /* mouse parallax (lerped) */
       var mx = 0, my = 0, tx = 0, ty = 0;
@@ -588,7 +681,6 @@
 
       /* rAF loop — pauses on tab blur */
       var rafId = 0;
-      var paused = document.hidden;
       function frame() {
         rafId = requestAnimationFrame(frame);
         points.rotation.y += 0.0006; // slow auto-rotate
@@ -598,7 +690,15 @@
         my += (ty - my) * 0.04;
         camera.position.x = mx * 0.45;
         camera.position.y = -my * 0.3;
+        camera.position.z = 6 - scrollP * 3.4;
         camera.lookAt(0, 0, 0);
+        /* converge: pull particles toward a horizontal band as the footer approaches */
+        var arr = pGeo.attributes.position.array;
+        for (var i = 0; i < COUNT; i++) {
+          var y0 = baseY[i];
+          arr[i * 3 + 1] = y0 * (1 - converge * 0.75);
+        }
+        pGeo.attributes.position.needsUpdate = converge > 0.001;
         renderer.render(scene, camera);
       }
       function start() { if (!rafId && !document.hidden) frame(); }
@@ -613,6 +713,7 @@
         stop();
         window.removeEventListener("resize", resize);
         window.removeEventListener("mousemove", onMove);
+        window.removeEventListener("scroll", onScroll);
         disposables.forEach(function (d) { d.dispose(); });
         renderer.dispose();
         canvas.remove();
