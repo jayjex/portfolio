@@ -44,6 +44,14 @@
     pointer-events: none;
   }
   .hero, main, footer { position: relative; z-index: 1; }
+  /* content sheet: opaque layer that visually separates body from the 3D backdrop */
+  main {
+    background: linear-gradient(180deg, #101016 0%, var(--bg) 220px);
+    border-left: 1px solid var(--line);
+    border-right: 1px solid var(--line);
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.6);
+  }
+  footer { background: var(--bg); }
   .static-hero .hero {
     background:
       radial-gradient(900px 520px at 72% -10%, rgba(74,222,128,0.10), transparent 62%),
@@ -215,7 +223,7 @@
   .cv .ops .t b { color: var(--txt); font-weight: 600; }
 
   /* ── footer ── */
-  footer { border-top: 1px solid var(--line); padding: 2.6rem 0 3.2rem; }
+  footer { background: var(--bg); border-top: 1px solid var(--line); padding: 2.6rem 0 3.2rem; }
   .foot { display: flex; justify-content: space-between; align-items: baseline; gap: 1.5rem; flex-wrap: wrap; font-family: var(--mono); font-size: 0.76rem; color: var(--faint); }
   .foot .f-links { display: flex; gap: 1.4rem; }
   .foot a { color: var(--dim); transition: color .15s; }
