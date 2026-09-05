@@ -448,7 +448,7 @@
     /* hero: slow fade-in + parallax drift on scroll */
     gsap.from(".hero-in", { y: 34, opacity: 0, duration: 0.9, ease: "power3.out" });
     gsap.to(".hero-in", {
-      yPercent: 10, opacity: 0.55, ease: "none",
+      yPercent: 10, ease: "none",
       scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
     });
 
