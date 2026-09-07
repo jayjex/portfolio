@@ -29,3 +29,7 @@ No license file yet. Site content © Matchbook Labs.
 
 Products shown on the site are sold on [Getly](https://www.getly.store/store/matchbook-labs-mtmw06l2):
 datasets, banner packs, Solana starter kits, plus one free sample.
+
+Every dataset has free samples in the [Data Vault](https://jayjex.github.io/data-vault/):
+HUD Fair Market Rents (51,895 rows), NFL games with betting lines (7,548), Airbnb
+listings across six cities (90,169).
