@@ -27,7 +27,7 @@ No license file yet. Site content © Matchbook Labs.
 
 ## Get the full pack
 
-Products shown on the site are sold on [Getly](https://www.getly.store/store/matchbook-labs-mtmw06l2):
+Products shown on the site are sold on [Getly](https://www.getly.store/store/matchbook-labs-mtrfh66f):
 datasets, banner packs, Solana starter kits, plus one free sample.
 
 Every dataset has free samples in the [Data Vault](https://jayjex.github.io/data-vault/):
